@@ -39,25 +39,40 @@ public class SecurityConfig {
     return new BCryptPasswordEncoder();
   }
 
+//  @Bean
+//  public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//    http
+//        .cors(Customizer.withDefaults())
+//        .csrf(AbstractHttpConfigurer::disable)
+//        .sessionManagement(
+//            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+//        .authorizeHttpRequests(authorize -> authorize
+//                .requestMatchers(HttpMethod.POST, "/api/users/signup", "/api/users/signin",
+//                    "/api/users/signin/*", "api/restaurants/search")
+//                .permitAll()
+//                .requestMatchers(HttpMethod.GET, "/api/restaurants/{restaurantId}",
+//                    "/api/restaurants/{restaurantId}/reviews").permitAll()
+//                .requestMatchers(HttpMethod.POST, "/api/users/change-password").authenticated() // 인증 필요
+//                .anyRequest().authenticated()
+//        )
+//        .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
+//
+//    return http.build();
+//  }
+
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
     http
-        .cors(Customizer.withDefaults())
-        .csrf(AbstractHttpConfigurer::disable)
-        .sessionManagement(
-            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .cors(Customizer.withDefaults())  // 기존 CORS 설정 유지
+        .csrf(AbstractHttpConfigurer::disable)  // CSRF 보호 비활성화
+        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))  // 세션 사용 안 함
         .authorizeHttpRequests(authorize -> authorize
-                .requestMatchers(HttpMethod.POST, "/api/users/signup", "/api/users/signin",
-                    "/api/users/signin/*", "api/restaurants/search")
-                .permitAll()
-                .requestMatchers(HttpMethod.GET, "/api/restaurants/{restaurantId}",
-                    "/api/restaurants/{restaurantId}/reviews").permitAll()
-                .requestMatchers(HttpMethod.POST, "/api/users/change-password").authenticated() // 인증 필요
-                .anyRequest().authenticated()
+            .requestMatchers("/**").permitAll()  // 🔥 모든 요청을 허용 (테스트용)
         )
         .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class); // JWT 필터 추가
 
     return http.build();
   }
+
 
 }
