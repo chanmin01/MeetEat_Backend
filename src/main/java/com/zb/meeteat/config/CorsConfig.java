@@ -16,6 +16,7 @@ public class CorsConfig {
     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
     CorsConfiguration config = new CorsConfiguration();
 
+
     // 모든 출처에서 요청 허용 (보안상 운영에서는 특정 출처만 허용해야 함)
 //    config.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000", "https://meet--eat.com"));
     config.setAllowedOriginPatterns(List.of("*"));
